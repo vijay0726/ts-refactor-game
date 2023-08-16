@@ -33,6 +33,20 @@ describe("NormalItemStrategy", () => {
   });
 
   // 测试项
+  it("Normal商品 销售日过期后，品质每日减1", () => {
+    const item = new Item("normal", 2, 20);
+    strategy.update(item);
+    expect(item.quality).toEqual(19);
+  });
+
+  it("Normal商品 销售日过期后，品质每日减2", () => {
+    const item = new Item("normal", 2, 20);
+    while (item.sellIn >= 0) {
+      strategy.update(item);
+      console.log("item.sellIn, item.quality", item.sellIn, item.quality);
+    }
+    expect(item.quality).toEqual(16);
+  });
 });
 
 describe("AgedBrieStrategy", () => {
@@ -43,6 +57,19 @@ describe("AgedBrieStrategy", () => {
   });
 
   // 测试项
+  it("Aged Brie商品， 销售未过期，品质每日加1", () => {
+    const item = new Item("Aged Brie", 2, 20);
+    strategy.update(item);
+    expect(item.quality).toEqual(21);
+  });
+
+  it("Aged Brie商品， 销售过期后，品质每日加2", () => {
+    const item = new Item("Aged Brie", 2, 20);
+    while (item.sellIn >= 0) {
+      strategy.update(item);
+    }
+    expect(item.quality).toEqual(24);
+  });
 });
 
 // 测试其他策略…
